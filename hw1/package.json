@@ -1,0 +1,14 @@
+{
+	"name": "hw1",
+	"version": "1.0.0",
+	"description": "Write a program for non-integer scaling of an image",
+	"scripts": {
+		"format": "autopep8 --in-place --recursive .",
+		"startBi": "python script.py --mode=INTER_LINEAR --factor=$FACTOR --input_path='./testInput.jpg' --output_path='./testOutput.jpg'",
+		"startCu": "python script.py --mode=INTER_CUBIC --factor=$FACTOR --input_path='./testInput.jpg' --output_path='./testOutput.jpg'",
+		"start": "bash generateImgs.sh",
+		"freeze": "pip list --format=freeze > requirements.txt"
+	},
+	"author": "Leon Lin",
+	"license": "ISC"
+}
