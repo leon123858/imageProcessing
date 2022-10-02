@@ -7,7 +7,7 @@
 		"startBi": "python script.py --mode=INTER_LINEAR --factor=$FACTOR --input_path='./testInput.jpg' --output_path='./testOutput.jpg'",
 		"startCu": "python script.py --mode=INTER_CUBIC --factor=$FACTOR --input_path='./testInput.jpg' --output_path='./testOutput.jpg'",
 		"start": "bash generateImgs.sh",
-		"freeze": "pip list --format=freeze > requirements.txt"
+		"freeze": "conda list -e > requirements.txt"
 	},
 	"author": "Leon Lin",
 	"license": "ISC"
