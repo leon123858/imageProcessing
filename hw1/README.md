@@ -81,3 +81,8 @@ $\sum_{i=0}^3\sum_{i=0}^3\quad a_{ij}x^iy^j$
 the bilinear interpolation only use general interpolation with 4 point, it do not need to care the derivatives of the interpolation function. Therefore, It only need to use 4 equations to solve the point.
 
 Finally, i consider “bicubic” has more than 4 times complexity than “bilinear”. (suppose the derivatives of the interpolation function are known, or it need more complexity to solve the derivatives)
+
+We can explain the above conclusion mathematically, when we have n*n pixel image.
+bilinear method’s complexity is bigO(n^2)*4
+bicubic method’s complexity is bigO(n^2)\*16
+So, each method’s complexity is bigO(n^2)
