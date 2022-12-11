@@ -8,7 +8,6 @@ import numpy as np
 import scipy.sparse
 from PIL import Image
 import scipy.sparse.linalg
-from cv2.ximgproc import jointBilateralFilter
 from torchfile import load as load_lua
 from numpy.lib.stride_tricks import as_strided
 
@@ -54,6 +53,15 @@ def numpy2cv2(cont, style, prop, width, height):
 
     # return np.concatenate((cont,np.concatenate((style,prop),axis=1)),axis=1)
     return prop, cont
+
+
+def makeFrames(content, style, props, outf):
+    print('Stack transferred frames back to video...')
+    layers, height, width = content[0].shape
+    for j in range(len(content)):
+        prop, cont = numpy2cv2(content[j], style, props[j], width, height)
+        cv2.imwrite(outf + "/frame{}.jpg".format(str(j)), prop)
+    print('Transferred frames saved at %s.' % outf)
 
 
 def makeVideo(content, style, props, outf):

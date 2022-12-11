@@ -8,18 +8,18 @@ import torch.backends.cudnn as cudnn
 from libs.models import encoder3, encoder4
 from libs.models import decoder3, decoder4
 import torchvision.transforms as transforms
-from libs.utils import makeVideo, print_options
+from libs.utils import makeFrames, print_options
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--vgg_dir", default='models/vgg_r31.pth',
+parser.add_argument("--vgg_dir", default='../../models/vgg_r31.pth',
                     help='pre-trained encoder path')
-parser.add_argument("--decoder_dir", default='models/dec_r31.pth',
+parser.add_argument("--decoder_dir", default='../../models/dec_r31.pth',
                     help='pre-trained decoder path')
-parser.add_argument("--matrix_dir", default="models/r31.pth",
+parser.add_argument("--matrix_dir", default="../../models/r31.pth",
                     help='path to pre-trained model')
-parser.add_argument("--style", default="data/style/in2.jpg",
+parser.add_argument("--style", default="../../styleImage/in2.jpg",
                     help='path to style image')
-parser.add_argument("--content_dir", default="data/videos/content/mountain_2/",
+parser.add_argument("--content_dir", default="../../cache/frames/",
                     help='path to video frames')
 parser.add_argument('--loadSize', type=int, default=512,
                     help='scale image size')
@@ -29,12 +29,20 @@ parser.add_argument("--name", default="transferred_video",
                     help="name of generated video")
 parser.add_argument("--layer", default="r31",
                     help="features of which layer to transform")
-parser.add_argument("--outf", default="videos",
+parser.add_argument("--outf", default="../../cache/frames/",
                     help="output folder")
 
 ################# PREPARATIONS #################
 opt = parser.parse_args()
 opt.cuda = torch.cuda.is_available()
+
+opt.vgg_dir = opt.vgg_dir.replace("r31", opt.layer)
+opt.vgg_dir = opt.vgg_dir.replace("r41", opt.layer)
+opt.decoder_dir = opt.decoder_dir.replace("r31", opt.layer)
+opt.decoder_dir = opt.decoder_dir.replace("r41", opt.layer)
+opt.matrix_dir = opt.matrix_dir.replace("r31", opt.layer)
+opt.matrix_dir = opt.matrix_dir.replace("r41", opt.layer)
+
 print_options(opt)
 
 os.makedirs(opt.outf, exist_ok=True)
@@ -70,9 +78,9 @@ elif (opt.layer == 'r41'):
     vgg = encoder4()
     dec = decoder4()
 matrix = MulLayer(layer=opt.layer)
-vgg.load_state_dict(torch.load(opt.vgg_dir))
-dec.load_state_dict(torch.load(opt.decoder_dir))
-matrix.load_state_dict(torch.load(opt.matrix_dir))
+vgg.load_state_dict(torch.load(opt.vgg_dir, map_location='cpu'))
+dec.load_state_dict(torch.load(opt.decoder_dir, map_location='cpu'))
+matrix.load_state_dict(torch.load(opt.matrix_dir, map_location='cpu'))
 
 ################# GLOBAL VARIABLE #################
 contentV = torch.Tensor(1, 3, opt.fineSize, opt.fineSize)
@@ -109,4 +117,4 @@ for i, (content, contentName) in enumerate(content_loader):
     transfer = transfer.clamp(0, 1)
     result_frames.append(transfer.squeeze(0).cpu().numpy())
 
-makeVideo(contents, style, result_frames, opt.outf)
+makeFrames(contents, style, result_frames, opt.outf)

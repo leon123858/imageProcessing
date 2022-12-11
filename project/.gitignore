@@ -1,4 +1,5 @@
 __MACOSX/
 sampleData/
 models/
+cache/
 *.zip
