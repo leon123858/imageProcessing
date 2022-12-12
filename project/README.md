@@ -8,6 +8,7 @@ _suggest python>3.8_
 pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 pip install torchfile
 pip install opencv-python
+pip install Pillow
 pip install gdown
 pip install --upgrade --no-cache-dir gdown
 ```
