@@ -2,7 +2,7 @@
 
 ## init env
 
-_suggest python>3.8_
+_suggest python>=3.8_
 
 ```shell
 pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116

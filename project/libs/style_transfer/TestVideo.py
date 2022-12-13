@@ -107,11 +107,11 @@ for i, (content, contentName) in enumerate(content_loader):
     # forward
     with torch.no_grad():
         cF = vgg(contentV)
-
+        trans = True if i == 0 else False
         if (opt.layer == 'r41'):
-            feature, transmatrix = matrix(cF[opt.layer], sF[opt.layer])
+            feature, transmatrix = matrix(cF[opt.layer], sF[opt.layer], trans)
         else:
-            feature, transmatrix = matrix(cF, sF)
+            feature, transmatrix = matrix(cF, sF, trans)
         transfer = dec(feature)
 
     transfer = transfer.clamp(0, 1)
